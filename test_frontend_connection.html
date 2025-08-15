@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhishGuard Frontend Connection Test</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .warning { background-color: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        .info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background-color: #0056b3; }
+        button:disabled { background-color: #6c757d; cursor: not-allowed; }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 PhishGuard Frontend Connection Test</h1>
+        <p>This page tests the connection between the frontend and backend API.</p>
+        
+        <div class="test-section">
+            <h3>Backend Connection Test</h3>
+            <button onclick="testBackendConnection()">Test Backend Connection</button>
+            <div id="backend-status"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>Email Analysis Test</h3>
+            <button onclick="testEmailAnalysis()" id="email-test-btn" disabled>Test Email Analysis</button>
+            <div id="email-status"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>URL Analysis Test</h3>
+            <button onclick="testUrlAnalysis()" id="url-test-btn" disabled>Test URL Analysis</button>
+            <div id="url-status"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>Complete Test Suite</h3>
+            <button onclick="runAllTests()">Run All Tests</button>
+            <div id="all-tests-status"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:8001';
+        let backendConnected = false;
+
+        function showStatus(elementId, message, type) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        async function testBackendConnection() {
+            showStatus('backend-status', '🔄 Testing backend connection...', 'info');
+            
+            try {
+                console.log('Testing connection to:', API_BASE_URL);
+                const response = await axios.get(`${API_BASE_URL}/api/health`, {
+                    timeout: 5000,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                
+                console.log('Backend response:', response.data);
+                
+                if (response.data.status === 'healthy' && response.data.models) {
+                    backendConnected = true;
+                    document.getElementById('email-test-btn').disabled = false;
+                    document.getElementById('url-test-btn').disabled = false;
+                    
+                    const modelStatus = response.data.models;
+                    const statusText = `
+                        ✅ Backend is running and healthy!<br>
+                        📧 Email Detector: ${modelStatus.email_detector ? '✅ Ready' : '❌ Not Ready'}<br>
+                        🔗 URL Detector: ${modelStatus.url_detector ? '✅ Ready' : '❌ Not Ready'}
+                    `;
+                    showStatus('backend-status', statusText, 'success');
+                } else {
+                    throw new Error('Backend returned unhealthy status');
+                }
+            } catch (error) {
+                console.error('Backend connection error:', error);
+                backendConnected = false;
+                document.getElementById('email-test-btn').disabled = true;
+                document.getElementById('url-test-btn').disabled = true;
+                
+                let errorMessage = '❌ Failed to connect to backend';
+                if (error.code === 'ECONNABORTED') {
+                    errorMessage += '<br>⏰ Request timed out';
+                } else if (error.response) {
+                    errorMessage += `<br>📡 Server error: ${error.response.status}`;
+                } else if (error.request) {
+                    errorMessage += '<br>🌐 No response received - check if backend is running';
+                } else {
+                    errorMessage += `<br>💥 Error: ${error.message}`;
+                }
+                
+                showStatus('backend-status', errorMessage, 'error');
+            }
+        }
+
+        async function testEmailAnalysis() {
+            if (!backendConnected) {
+                showStatus('email-status', '❌ Backend not connected. Please test backend connection first.', 'error');
+                return;
+            }
+
+            showStatus('email-status', '🔄 Testing email analysis...', 'info');
+            
+            const testEmail = {
+                subject: "Test Email Subject",
+                body: "This is a test email body for analysis.",
+                sender: "test@example.com"
+            };
+
+            try {
+                const response = await axios.post(`${API_BASE_URL}/api/analyze-email`, testEmail, {
+                    timeout: 10000,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                
+                const result = response.data.data;
+                const statusText = `
+                    ✅ Email analysis successful!<br>
+                    📊 Classification: ${result.classification}<br>
+                    🎯 Confidence: ${(result.confidence * 100).toFixed(1)}%<br>
+                    ⚠️ Risk Score: ${(result.risk_score * 100).toFixed(1)}%<br>
+                    🏷️ Risk Level: ${result.risk_level}
+                `;
+                showStatus('email-status', statusText, 'success');
+            } catch (error) {
+                console.error('Email analysis error:', error);
+                let errorMessage = '❌ Email analysis failed';
+                if (error.response) {
+                    errorMessage += `<br>📡 Server error: ${error.response.data.detail || 'Unknown error'}`;
+                } else if (error.request) {
+                    errorMessage += '<br>🌐 No response received';
+                } else {
+                    errorMessage += `<br>💥 Error: ${error.message}`;
+                }
+                showStatus('email-status', errorMessage, 'error');
+            }
+        }
+
+        async function testUrlAnalysis() {
+            if (!backendConnected) {
+                showStatus('url-status', '❌ Backend not connected. Please test backend connection first.', 'error');
+                return;
+            }
+
+            showStatus('url-status', '🔄 Testing URL analysis...', 'info');
+            
+            const testUrl = {
+                url: "https://www.google.com"
+            };
+
+            try {
+                const response = await axios.post(`${API_BASE_URL}/api/analyze-url`, testUrl, {
+                    timeout: 10000,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                
+                const result = response.data.data;
+                const statusText = `
+                    ✅ URL analysis successful!<br>
+                    📊 Classification: ${result.classification}<br>
+                    🎯 Confidence: ${(result.confidence * 100).toFixed(1)}%<br>
+                    ⚠️ Risk Score: ${(result.risk_score * 100).toFixed(1)}%<br>
+                    🏷️ Risk Level: ${result.risk_level}
+                `;
+                showStatus('url-status', statusText, 'success');
+            } catch (error) {
+                console.error('URL analysis error:', error);
+                let errorMessage = '❌ URL analysis failed';
+                if (error.response) {
+                    errorMessage += `<br>📡 Server error: ${error.response.data.detail || 'Unknown error'}`;
+                } else if (error.request) {
+                    errorMessage += '<br>🌐 No response received';
+                } else {
+                    errorMessage += `<br>💥 Error: ${error.message}`;
+                }
+                showStatus('url-status', errorMessage, 'error');
+            }
+        }
+
+        async function runAllTests() {
+            showStatus('all-tests-status', '🔄 Running complete test suite...', 'info');
+            
+            // Test 1: Backend connection
+            await testBackendConnection();
+            
+            if (backendConnected) {
+                // Test 2: Email analysis
+                await testEmailAnalysis();
+                
+                // Test 3: URL analysis
+                await testUrlAnalysis();
+                
+                showStatus('all-tests-status', '🎉 All tests completed successfully!', 'success');
+            } else {
+                showStatus('all-tests-status', '❌ Cannot run tests - backend not connected', 'error');
+            }
+        }
+
+        // Auto-run backend connection test on page load
+        window.onload = function() {
+            testBackendConnection();
+        };
+    </script>
+</body>
+</html>

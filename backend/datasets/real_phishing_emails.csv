@@ -1,0 +1,31 @@
+email_content,is_phishing,type
+Subject: Urgent PayPal Account Verification Required. Your PayPal account has been temporarily suspended due to unusual activity. Please verify your identity immediately by clicking the link below to avoid permanent account closure. Verify Now: http://paypal-verify.tk/account,1,phishing
+"Subject: Security Alert - Bank of America. We have detected suspicious activity on your account. For your protection, we have temporarily restricted access. Please log in immediately to confirm your identity: http://bankofamerica-security.ml/login",1,phishing
+Subject: Microsoft Account Security Alert. Your Microsoft account sign-in was blocked due to suspicious activity. Verify your account now to restore access: http://microsoft-security.ga/verify. This verification expires in 24 hours.,1,phishing
+Subject: Amazon Account Suspended. Your Amazon account has been suspended due to billing issues. Update your payment method immediately to avoid account closure: http://amazon-billing.cf/update-payment,1,phishing
+"Subject: IRS Tax Refund Notification. You are eligible for a tax refund of $2,847. Click here to claim your refund before the deadline: http://irs-refund.top/claim?id=TAX2024",1,phishing
+Subject: Netflix Payment Failed. Your Netflix subscription could not be renewed. Update your billing information within 48 hours to continue your service: http://netflix-billing.xyz/update,1,phishing
+Subject: Apple ID Locked. Your Apple ID has been locked for security reasons. Unlock your account by verifying your information: http://apple-security.click/unlock-account,1,phishing
+Subject: Google Account Security Warning. Unusual sign-in activity detected on your Google account. Secure your account now: http://google-security.tk/secure-account,1,phishing
+Subject: Social Security Administration Notice. Your Social Security benefits have been suspended. Verify your information to restore benefits: http://ssa-verify.ml/benefits,1,phishing
+"Subject: Congratulations! You've Won $50,000. You have been selected as a winner in our international lottery. Claim your prize now: http://winner-claim.ga/lottery?id=WIN2024",1,phishing
+"Subject: Bitcoin Investment Opportunity. Limited time: Invest $500 and earn $5,000 in 30 days. Join now: http://crypto-invest.top/signup",1,phishing
+Subject: Outstanding Invoice Payment Required. Invoice #INV-2024-0892 is now 30 days overdue. Pay immediately to avoid legal action: http://invoice-pay.cf/payment,1,phishing
+Subject: Windows Security Alert. Your computer is infected with malware. Download our security tool immediately: http://windows-security.ml/download,1,phishing
+Subject: FedEx Delivery Failure. We attempted to deliver your package but failed. Reschedule delivery: http://fedex-delivery.tk/reschedule,1,phishing
+Subject: Health Insurance Enrollment Deadline. Your health insurance enrollment expires today. Complete enrollment now: http://health-enroll.xyz/signup,1,phishing
+"Subject: Weekly Team Meeting Reminder. Hi everyone, don't forget about our weekly team meeting tomorrow at 2 PM in Conference Room A. We'll be discussing the quarterly reports and upcoming project deadlines.",0,legitimate
+"Subject: Order Confirmation #AMZ123456. Thank you for your Amazon order. Your items will be delivered by Thursday, March 15th. You can track your package using the order number above.",0,legitimate
+"Subject: TechCrunch Daily Newsletter. Here are today's top technology news stories: Apple announces new MacBook Pro models, Google releases latest AI update, and startup funding hits new record.",0,legitimate
+Subject: Appointment Reminder - Dr. Smith. This is a reminder of your dental appointment scheduled for tomorrow at 10:30 AM. Please arrive 15 minutes early for check-in.,0,legitimate
+Subject: Course Update - Introduction to Machine Learning. New lecture materials have been posted for Week 5. Assignment 3 is due next Friday. Office hours are available Tuesday and Thursday.,0,legitimate
+Subject: LinkedIn Connection Request. John Doe would like to connect with you on LinkedIn. John works at Tech Solutions Inc as a Software Engineer.,0,legitimate
+Subject: Conference Registration Confirmed. Your registration for the Annual Marketing Conference has been confirmed. The event is scheduled for April 20-22 at the Downtown Convention Center.,0,legitimate
+Subject: Spotify Premium Renewal. Your Spotify Premium subscription has been renewed for another month. Your next billing date is April 15th for $9.99.,0,legitimate
+Subject: Monthly Statement Available. Your monthly statement for March 2024 is now available in your online banking account. Please log in to view your statement.,0,legitimate
+Subject: Project Status Update. The website redesign project is 75% complete. We're on track to launch next month. Final testing phase begins Monday.,0,legitimate
+"Subject: Support Ticket #12345 Resolved. Your recent support request regarding account settings has been resolved. If you need further assistance, please reply to this email.",0,legitimate
+Subject: Flight Confirmation AA1234. Your flight from New York to Los Angeles is confirmed for March 20th at 8:00 AM. Check-in opens 24 hours before departure.,0,legitimate
+Subject: Your Electric Bill is Ready. Your March electricity bill of $127.50 is now available online. Payment is due by April 10th to avoid late fees.,0,legitimate
+Subject: Adobe Creative Cloud Update Available. A new version of Photoshop is available for download. This update includes bug fixes and performance improvements.,0,legitimate
+Subject: Neighborhood Watch Meeting. The monthly neighborhood watch meeting is scheduled for Saturday at 7 PM at the community center. Light refreshments will be provided.,0,legitimate
